@@ -1,0 +1,99 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Stand your voice",
+    "version": "Unknown"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "components": {
+    "schemas": {
+      "order": {
+        "title": "Order request",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          }
+        }
+      },
+      "botAnswer": {
+        "type": "object",
+        "title": "Answer from bot",
+        "properties": {
+          "context": {
+            "type": "string"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "sentence": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+              },
+              "cart": {
+                "type": "object"
+              }
+            }
+          },
+          "cartConfirmation": {
+            "type": "boolean"
+          }
+          
+        }
+      }
+    },
+    "requestBodies": {
+      "orderRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/order"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+        "botAnswerResponse": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/botAnswer"
+                }
+              }
+            }
+          }
+    }
+  },
+  "paths": {
+    "/v1/api/bot/request": {
+      "post": {
+        "operationId": "orderPizza",
+        "summary": "Order pizza",
+        "produces": ["application/json"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/orderRequest"
+        },
+        "responses": {
+            "200": {
+              "$ref": "#/components/responses/botAnswerResponse"
+            }
+          }
+      }
+    }
+  }
+}
